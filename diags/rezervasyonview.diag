@@ -1,0 +1,25 @@
+seqdiag {
+    default_fontsize = 16;  // default value is 11
+
+  browser  -> webserver [label = "POST /rezervasyon"];
+              webserver  => webserver [label = "get form",return="form"];
+              webserver  => webserver [label = "get masa",return="masa form value"];
+
+              webserver  -> database [leftnote="if form.is_valid"];
+              webserver  -> database [leftnote="if form.date>timezone.now"];
+              webserver  => database [label="SELECT Rezervasyon",return="available Rezervasyon dates"];
+              webserver  => database [label="SELECT Masa",return="available Masas"];
+              webserver  -> database [leftnote="if masa is musait"];
+              webserver  => database [label="INSERT Rezervasyon"];
+              webserver  => database [label="INSERT MasaSecimi"];
+              database --> webserver [leftnote="endif"];
+              database --> webserver [leftnote="endif"];
+              database --> webserver [leftnote="endif"];
+
+  webserver --> browser;
+  === GET/POST Seperator ===
+
+  browser  -> webserver [label = "GET /rezervasyon"];
+              webserver  => webserver [label = "create form"];
+  webserver --> browser [label="form"];
+}

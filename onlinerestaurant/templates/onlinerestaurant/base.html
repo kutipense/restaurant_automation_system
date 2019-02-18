@@ -1,0 +1,65 @@
+<h1>YILDIZ RESTAURANT</h1>
+
+<p><< {{ user.username }} >> olarak giris yapildi <a href="/cikis/">Cikis Yap</a></p>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if rez %}
+<form method="post">
+    {% csrf_token %}
+    <a>Rezervasyon Listeniz: ( Isterseniz Silebilirsiniz )</a>
+    <ul>
+        {% for r,m in rez %}
+        <li><input type="radio" name="rez" value={{ r.id }}>
+            {{ r.date }} tarihinde {{ m.masa.no }}. masa rezerve edildi.</li>
+        {% endfor %}
+    </ul>
+    <button type="submit">Rezervasyon Sil</button>
+</form>
+{% endif %}
+
+{% if yemekler %}
+<form method="post">
+    {% csrf_token %}
+    <a>Yemek Siparisleriniz: ( Isterseniz Silebilirsiniz )</a>
+        <ul>
+        {% for yemek_list in yemekler %}
+            <li><input type="checkbox" name="siparis" value={{ yemek_list.0.id }}>{{ yemek_list.0.orderdate }}
+                <ul>
+                {% for yemek in yemek_list.1 %}
+                    <li><input type="checkbox" name="yemek" value={{ yemek.id }}>
+                    {{ yemek.yemek.name }}</li>
+                {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        {% if card %}
+        <li><input type="checkbox" name="card" value="true">Kartla Ode</li>
+        {% endif %}
+        </ul>
+    <button name="sil" value="1" type="submit">Siparis Sil</button>
+    <button name="onayla" value="1" type="submit">Siparis Onayla</button>
+</form>
+{% endif %}
+
+<h2><strong>
+    <ol>
+    <li><a href="rezervasyon">Rezervasyon yap</a></li>
+    <li><a href="siparis">Siparis ver</a></li>
+    <li><a href="yorum">Siparislere yorum yap / Yorumlari gor</a></li>
+    </ol>
+</strong></h2>
+
+<h2>Sistemi Puanla</h2>
+<a>Genel Puan: {{ ort_puan }}</a>
+<form method="post">
+    {% csrf_token %}
+    <input type="number" max=5 min=1 name="puan" value=5>
+    <input type="submit" value="Puan Ver">
+</form>

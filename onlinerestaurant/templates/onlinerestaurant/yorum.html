@@ -1,0 +1,28 @@
+<a href="/">Ana Sayfa</a>
+
+{% if siparisler %}
+    <h1>Siparisler</h1>
+    <ul>
+    {% for s in siparisler %}
+        <form method="post">
+            {% csrf_token %}    
+            <li>{{ s.orderdate }}</li>
+            <ul>{{ form.as_ul }}</ul>
+            <button type="submit" name = "yolla" value = {{ s.id }}>Yorum Yap</button>
+        </form>
+    {% endfor %}
+    </ul>
+{% else %}
+    <h1>Yorum Yapilabilecek Siparis Yok</h1>
+{% endif %}
+
+{% if yorumlar %}
+    <h1>Onceki Yorumlar</h1>
+    <ul>
+    {% for y in yorumlar %}
+        <ul>
+        <li>{{ y.orderdate }}: <p>{{ y.comment }} | {{ y.star }} yildiz</p></li>
+        </ul>
+    {% endfor %}
+    </ul>
+{% endif %}

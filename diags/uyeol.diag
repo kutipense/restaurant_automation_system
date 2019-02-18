@@ -1,0 +1,18 @@
+seqdiag {
+    default_fontsize = 16;  // default value is 11
+
+  browser  -> webserver [label = "POST /uyeol"];
+              webserver  => webserver [label = "get form"];
+              webserver  -> database [leftnote="if form.is_valid"];
+
+              webserver  => database [label="INSERT Musteri"];
+              webserver  => webserver [label="if Musteri not logged in then log in"];
+              database --> webserver [leftnote="endif"];
+
+  webserver --> browser;
+  === GET/POST Seperator ===
+
+  browser  -> webserver [label = "GET /uyeol"];
+              webserver  => webserver [label = "create form"];
+  webserver --> browser [label ="form"];
+}

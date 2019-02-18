@@ -1,0 +1,23 @@
+seqdiag {
+    default_fontsize = 16;  // default value is 11
+
+  browser  -> webserver [label = "POST /yorumyap", return=""];
+              webserver  => webserver [label = "get form",return="form"];
+              webserver  => webserver [label = "get siparis",return="siparis form value"];
+
+              webserver  -> database [leftnote="if form.is_valid && siparis"];
+              webserver  => database [label="SELECT SiparisHavuzu",return="filtered SiparisHavuzus id=siparis"];
+              webserver  => database [label="INSERT yorum by form"];
+              webserver  => database [label="DELETE SiparisHavuzu"];
+              database --> webserver [leftnote="endif"];
+
+  webserver --> browser;
+  === GET/POST Seperator ===
+
+  browser  -> webserver [label = "GET /yorumyap"];
+              webserver  => webserver [label = "get Musteri",return="User"];
+              webserver  => database [label = "SELECT SiparisHavuzu",return="Filtered SiparisHavuzu m = Musteri"];
+              webserver  => webserver [label = "create form"];
+              webserver  => database [label = "SELECT Yorum",return="all Yorums"];
+  webserver --> browser [label="siparisler,form,yorumlar"];
+}

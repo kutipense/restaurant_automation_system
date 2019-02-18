@@ -1,0 +1,17 @@
+KURULUM:
+    SISTEMIN CALISMASI ICIN GEREKENLER
+        python3
+        python3-django
+
+    UBUNTU VE TUREVLERI ICIN KOLAY KURULUM:
+        ./setup.sh
+
+SUNUCU CALISTIRMA:
+    python3 /path/to/restaurant/manage.py runserver
+
+    localhost:8000 adresinden siteye ulasilabilir
+
+
+Sekans diagramlarina dosyalardan erisebilirsiniz.
+
+Python ve Django kullanarak gelistirildi.

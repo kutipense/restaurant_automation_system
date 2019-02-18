@@ -1,0 +1,23 @@
+<a href="/">Ana Sayfa</a>
+
+<h1>Rezervasyon</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Kontrol Et</button>
+
+  {% if masalar %}
+    <h1>Uygun Masalar</h1>
+        {% csrf_token %}
+        <ul>
+        {% for masa in masalar %}
+            <li><input type="radio" name="masa" value={{ masa.no }}>{{ masa.no }}. masa uygun</li>
+        {% endfor %}
+        </ul>
+      <button type="submit">Rezervasyon Yap</button>
+  {% else %}
+    <h1>Bos Masa Yok</h1>
+  {% endif %}
+</form>
+
+

@@ -1,0 +1,18 @@
+seqdiag {
+    default_fontsize = 16;  // default value is 11
+
+  browser  -> webserver [label = "POST /siparis"];
+              webserver  => webserver [label = "get yemekler",return="yemekler"];
+              webserver  -> database [leftnote="if yemekler"];
+
+              webserver  => database [leftnote="*", label="SELECT Yemek",return="according Yemek"];
+              webserver  => database [label="INSERT YemekSiparisi",rightnote="*"];
+              database --> webserver [leftnote="endif"];
+
+  webserver --> browser;
+  === GET/POST Seperator ===
+
+  browser  -> webserver [label = "GET /siparis"];
+              webserver  => webserver [label = "get_yemek",return="All Yemeks => yemek"];
+  webserver --> browser [label="yemek"];
+}

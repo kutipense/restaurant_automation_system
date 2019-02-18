@@ -1,0 +1,43 @@
+seqdiag {
+    default_fontsize = 16;  // default value is 11
+
+  browser  -> webserver [label = "POST /index"];
+              webserver  => webserver [label = "get rez",return="rez form value"];
+              webserver  => webserver [label = "get puan",return="puan form value"];
+              webserver  => webserver [label = "get siparis",return="siparis form value"];
+              webserver  => webserver [label = "get yemek",return="yemek form value"];
+              webserver  => database [leftnote="if rez", label = "DELETE filtered Rezervasyon",rightnote="endif"];
+              webserver  -> database [leftnote="if siparis"];
+
+              webserver  => webserver [rightnote="tmp",label = "get sil"];
+              webserver  => database [leftnote="if tmp", label = "DELETE filtered SiparisHavuzu"];
+              webserver  => webserver [label = "get onayla",rightnote="tmp"];
+              database --> webserver [leftnote="else if tmp"];
+              webserver  -> database [label = "INSERT filtered SiparisHavuzu"];
+              database --> webserver [leftnote="endif"];
+              database --> webserver [leftnote="endif"];
+
+              webserver  -> database [leftnote="if yemek"];
+              webserver  => webserver [label = "get sil",rightnote="tmp"];
+              webserver  -> database [leftnote="if tmp"];
+              webserver  => database [label="SELECT YemekSiparisi",return="filtered YemekSiparisis => y"];
+              webserver  => database [label="if num of yemeksiparisi.siparis == 1 then DELETE SiparisHavuzu"];
+              webserver  => database [label="if y DELETE YemekSiparisi"];
+              database --> webserver [leftnote="endif"];
+
+              database --> webserver [leftnote="endif"];
+
+              webserver  => database [leftnote="if puan",label="INSERT Musteri's puan",rightnote="endif"];
+
+
+  webserver --> browser;
+  === GET/POST Seperator ===
+
+  browser  -> webserver [label = "GET /index"];
+              webserver  => database [label = "SELECT SiparisHavuzu",return="Filtered SiparisHavuzus"];
+              webserver  => database [label = "SELECT Musteri",return="Filtered Musteris"];
+              webserver  => database [label = "SELECT Rezervasyon",return="Filtered Rezervasyons"];
+              webserver  => database [label = "SELECT Musteri",return="All Musteris"];
+              
+  webserver --> browser [label = "rez_list,yemek_list,puan"];
+}

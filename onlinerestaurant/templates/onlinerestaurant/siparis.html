@@ -1,0 +1,27 @@
+<a href="/">Ana Sayfa</a>
+
+{% if yemekler %}
+    <h1>Yemekler</h1>
+
+    <form method="post">
+    {% csrf_token %}
+    <ul>
+    {% for yemek_list in yemekler %}
+        {% if yemek_list.1 %}
+            <li>{{ yemek_list.0 }}
+                <ul>
+                {% for yemek in yemek_list.1 %}
+                <li><input type="checkbox" name="yemek" value={{ yemek.id }}>
+                {{ yemek }}</li>
+                {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+    {% endfor %}
+    <li><input type="checkbox" name="card" value="true">Online Ode</li>
+    <button type="submit">Siparis Ver</button>
+    </ul>
+    </form>
+{% else %}
+    <h1>Yemek Yok</h1>
+{% endif %}
